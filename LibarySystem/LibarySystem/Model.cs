@@ -29,7 +29,11 @@ namespace LibarySystem
             [Column]
             public string Username;
             [Column]
-            public string Password;
+            public string Password
+            {
+                get;
+                set;
+            }
             [Column]
             public string Surname;
             [Column]
@@ -71,9 +75,44 @@ namespace LibarySystem
             [Column]
             public string Publisher;
         }
-        public Book(string t_Name, string t_ISBN, string t_Author, string t_Publisher)
-        {
+    }
 
+    class objBook
+    {
+        public string Name { get; }
+        public string ISBN { get; }
+        public string Author { get; }
+        public string Publisher { get; }
+
+        public objBook(string t_Name, string t_ISBN, string t_Author, string t_Publisher)
+        {
+            Name = t_Name;
+            ISBN = t_ISBN;
+            Author = t_Author;
+            Publisher = t_Publisher;
         }
     }
+
+    class objCustomer
+    {
+        public string Username { get; }
+        public string Password { get; }
+        public string Surename { get; }
+        public string Lastname { get; }
+        public string Adress { get; }
+        public int Zip { get; }
+        public string City { get; }
+
+        public objCustomer(string t_Username, string t_Password, string t_Surname, string t_Last_name, string t_adress, int t_zip, string t_city)
+        {
+            Username = t_Username;
+            Password = t_Password;
+            Surename = t_Surname;
+            Lastname = t_Last_name;
+            Adress = t_adress;
+            Zip = t_zip;
+            Adress = t_city;
+        }
+    }
+
 }

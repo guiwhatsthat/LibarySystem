@@ -25,19 +25,31 @@ namespace LibarySystem
             InitializeComponent();
         }
 
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                BntLogin_Click(sender,e);
+            }
+        }
+
         private void BntLogin_Click(object sender, RoutedEventArgs e)
         {
             //Create view object
             View objView = new View();
 
             //Call login function
-            bool loginCorrect = objView.Login("DummyStringOne", "DummyStringTwo");
+            bool loginCorrect = objView.Login(txtUsername.Text, txtPassword.Password);
             
             //Create user interface
             if (loginCorrect)
             {
                 UserInterface guiUser = new UserInterface();
                 guiUser.Show();
+            } else
+            {
+
+                MessageBox.Show("Username or password is not correct", "Invalide credntials", MessageBoxButton.OK,MessageBoxImage.Exclamation);
             }
         }
     }

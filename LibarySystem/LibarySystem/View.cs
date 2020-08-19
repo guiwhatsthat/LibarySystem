@@ -16,28 +16,29 @@ namespace LibarySystem
             Controller con = new Controller();
 
             //Check if username and pass which where provides are correct
-            var objCustomer = con.Get_Customer("s.gasser"); // We should get an objecz from type Customer back, this class is defined in the model
-            //close DB
-            string testpw = "password";
-            return true;
+            bool returnValue = false;
+            try
+            {
+                objCustomer objCustomer = con.Get_Customer(t_username);
+                if (objCustomer.Password == t_password)
+                {
+                    returnValue = true;
+                }
+            } catch { }
+            
+
+            return returnValue;
         }
 
-        public List<string> Get_Book(string t_Searchstring)
+        public List<objBook> Get_Book(string t_Searchstring)
         {
-            //Call connect to DB
+            //Create controller object 
+            Controller con = new Controller();
 
-            //Call the read DB with search string
+            //search
+            var books =con.Get_Book(t_Searchstring);
 
-            //close DB
-
-            //temp returnvalue
-            List<string> bookList = new List<string>();
-            bookList.Add("Book 1");
-            bookList.Add("Book 2");
-            bookList.Add("Book 3");
-
-            //Return the list of found books
-            return bookList;
+            return books;
         }
     }
 }

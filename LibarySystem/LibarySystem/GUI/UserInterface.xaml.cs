@@ -30,16 +30,22 @@ namespace LibarySystem
             if (string.IsNullOrEmpty(searchString))
             {
                 MessageBox.Show("The search can not be empty", "Please enter a search string", MessageBoxButton.OK, MessageBoxImage.Warning);
-
+                return;
             }
-            else {
-                //Create view object
-                View objView = new View();
+            
+            //Create view object
+            View objView = new View();
 
-                //Call the search book function
-                List<String> bookList = objView.Get_Book(searchString);
-                this.lvFoundBooks.ItemsSource = bookList;
-            }
+            //Call the search book function
+            List<objBook> bookList = objView.Get_Book(searchString);
+
+            //Listview 
+            lvFoundBooks.ItemsSource = bookList;
+        }
+
+        private void BtnRent_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
