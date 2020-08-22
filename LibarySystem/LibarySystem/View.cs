@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-
+using System.Windows;
 
 namespace LibarySystem
 {
@@ -39,6 +39,26 @@ namespace LibarySystem
             var books =con.Get_Book(t_Searchstring);
 
             return books;
+        }
+
+        public bool Get_ReservationState(string t_ISBN)
+        {
+            //Create controller object 
+            Controller con = new Controller();
+
+            return con.Get_ReservationState(t_ISBN);
+        }
+
+        public void Set_Reseravtion(string t_ISBN, string t_CurrentUser)
+        {
+            //Create controller object 
+            Controller con = new Controller();
+            if (con.Set_Reseravtion(t_ISBN, t_CurrentUser)) {
+                MessageBox.Show("Reservation was successfull", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            } else
+            {
+                MessageBox.Show("Something went wrong." + Environment.NewLine + " Please contact support!" , "Success", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

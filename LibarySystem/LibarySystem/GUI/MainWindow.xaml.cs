@@ -44,7 +44,7 @@ namespace LibarySystem
             //Create user interface
             if (loginCorrect)
             {
-                UserInterface guiUser = new UserInterface();
+                UserInterface guiUser = new UserInterface(txtUsername.Text);
                 guiUser.Show();
             } else
             {

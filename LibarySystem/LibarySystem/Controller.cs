@@ -37,7 +37,7 @@ namespace LibarySystem
                            select i_u;
             //Convert DB search to objects
             foreach (var i in returnValue) {
-                var customer = new objCustomer(i.Username, i.Password, i.Surname, i.Last_name, i.Address, i.ZIP, i.City);
+                var customer = new objCustomer(i.Username, i.Password, i.Surname, i.Last_name, i.Address, i.ZIP, i.City, i.Pkey_1);
                 returnList.Add(customer);
             }
 
@@ -80,7 +80,7 @@ namespace LibarySystem
             //Convert DB search to objects
             foreach (var i in returnedBooks)
             {
-                var book = new objBook(i.Name, i.ISBN, i.Author, i.Publisher);
+                var book = new objBook(i.Name, i.ISBN, i.Author, i.Publisher, i.Pkey_1);
                 returnList.Add(book);
             }
 
@@ -88,6 +88,79 @@ namespace LibarySystem
             dbConnection.Dispose();
 
             return returnList;
+        }
+
+        //Check if a book is currently avaiable or not
+        public bool Get_ReservationState (string t_ISBN)
+        {
+            bool returnValue = false;
+            //Get DB connction
+            var dbConnection = Create_DBConnection();
+            objBook book = Get_Book(t_ISBN).First();
+            Table<Reservation.db_Reservation> reservationTable = dbConnection.GetTable<Reservation.db_Reservation>();
+
+            var reservationList = new List<objReservation>();
+
+            //select
+            var currentReservations =
+                           from i_u in reservationTable
+                           where i_u.FKey_Book == book.PK
+                           select i_u;
+            //Convert DB search to objects
+            foreach (var i in currentReservations)
+            {
+                var reservvation = new objReservation(i.Reservation_date, i.Done, i.FKey_Book, i.FKey_Customer);
+                reservationList.Add(reservvation);
+            }
+
+            if (reservationList.Count > 0)
+            {
+                returnValue = true;
+            }
+
+            return returnValue;
+        }
+
+        //Create a reservation
+        public bool Set_Reseravtion(string t_ISBN, string t_CurrentUser)
+        {
+            bool returnValue = true;
+            try
+            {
+                //Get DB connction
+                var dbConnection = Create_DBConnection();
+
+                //Get_CurrentUser
+                objCustomer user = Get_Customer(t_CurrentUser);
+
+                //Get Book for reservation
+                objBook book = Get_Book(t_ISBN).First();
+
+
+
+                //Sql insert
+                // Create a new Order object.
+                Reservation.db_Reservation reservation = new Reservation.db_Reservation
+                {
+                    Reservation_date = DateTime.Now,
+                    Done = false,
+                    FKey_Book = book.PK,
+                    FKey_Customer = user.PK
+                };
+
+                // Add the new object to the Orders collection.
+                Table<Reservation.db_Reservation> reservationTable = dbConnection.GetTable<Reservation.db_Reservation>();
+                reservationTable.InsertOnSubmit(reservation);
+                dbConnection.SubmitChanges();
+
+              
+            }
+            catch
+            {
+                returnValue = false;
+            }
+
+            return returnValue;
         }
 
     }

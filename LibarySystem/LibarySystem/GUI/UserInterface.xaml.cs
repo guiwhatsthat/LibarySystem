@@ -19,8 +19,10 @@ namespace LibarySystem
     /// </summary>
     public partial class UserInterface : Window
     {
-        public UserInterface()
+        string User;
+        public UserInterface(string t_User)
         {
+            User = t_User;
             InitializeComponent();
         }
 
@@ -43,8 +45,38 @@ namespace LibarySystem
             lvFoundBooks.ItemsSource = bookList;
         }
 
+        //Ganze logik von hier muss in das view !!!!!!!!!!!!!!!!
         private void BtnRent_Click(object sender, RoutedEventArgs e)
         {
+            if (lvFoundBooks.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a book", "Please enter a search string", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //Pop Up reservation question
+            //first I should check if the book is currently avaiable 
+            //call function check reservation
+            //Create view object
+            View objView = new View();
+            objBook selectBook = (objBook)lvFoundBooks.Items[lvFoundBooks.SelectedIndex];
+
+            if (objView.Get_ReservationState(selectBook.ISBN))
+            {
+                MessageBox.Show("Book is currently not avaiable", "Sorry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //ask for approvle
+            var reservationChoice = MessageBox.Show("Do you want to make a reservation for the book " + selectBook.Name + " from " + selectBook.Author, "Are your sure?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (reservationChoice.ToString() == "No")
+            {
+                return;
+            }
+
+            //Do reservation sql boooooooooooooy
+            objView.Set_Reseravtion(selectBook.ISBN, User);
 
         }
     }

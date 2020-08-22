@@ -77,19 +77,63 @@ namespace LibarySystem
         }
     }
 
+    class Reservation
+    {
+        //SQL mapping
+        [Table(Name = "Reservation")]
+        public class db_Reservation
+        {
+            //Mapper auf Primary Key
+            [Column(Name = "Pkey", IsDbGenerated = true, IsPrimaryKey = true)]
+            public int Pkey_1
+            {
+                get;
+                set;
+            }
+
+            //Mapper auf Feld Name der Gruppe
+            [Column]
+            public DateTime Reservation_date;
+            [Column]
+            public bool Done;
+            [Column]
+            public int FKey_Book;
+            [Column]
+            public int FKey_Customer;
+        }
+    }
+
+    class objReservation
+    {
+        public DateTime Reservation_date { get; }
+        public bool Done { get; }
+        public int FKey_Book { get; }
+        public int FKey_Customer { get; }
+
+        public objReservation(DateTime t_Reservation_date, bool t_Done, int t_FKey_Book, int t_FKey_Customer)
+        {
+            Reservation_date = t_Reservation_date;
+            Done = t_Done;
+            FKey_Book = t_FKey_Book;
+            FKey_Customer = t_FKey_Customer;
+        }
+    }
+
     class objBook
     {
         public string Name { get; }
         public string ISBN { get; }
         public string Author { get; }
         public string Publisher { get; }
+        public int PK { get; }
 
-        public objBook(string t_Name, string t_ISBN, string t_Author, string t_Publisher)
+        public objBook(string t_Name, string t_ISBN, string t_Author, string t_Publisher, int t_PK)
         {
             Name = t_Name;
             ISBN = t_ISBN;
             Author = t_Author;
             Publisher = t_Publisher;
+            PK = t_PK;
         }
     }
 
@@ -102,8 +146,9 @@ namespace LibarySystem
         public string Adress { get; }
         public int Zip { get; }
         public string City { get; }
+        public int PK { get; }
 
-        public objCustomer(string t_Username, string t_Password, string t_Surname, string t_Last_name, string t_adress, int t_zip, string t_city)
+        public objCustomer(string t_Username, string t_Password, string t_Surname, string t_Last_name, string t_adress, int t_zip, string t_city, int t_PK)
         {
             Username = t_Username;
             Password = t_Password;
@@ -112,6 +157,7 @@ namespace LibarySystem
             Adress = t_adress;
             Zip = t_zip;
             Adress = t_city;
+            PK = t_PK;
         }
     }
 
