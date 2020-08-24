@@ -19,8 +19,8 @@ namespace LibarySystem
             bool returnValue = false;
             try
             {
-                objCustomer objCustomer = con.Get_Customer(t_username);
-                if (objCustomer.Password == t_password)
+                objUser objUser = con.Get_User(t_username);
+                if (objUser.Password == t_password)
                 {
                     returnValue = true;
                 }

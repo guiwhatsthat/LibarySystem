@@ -11,11 +11,11 @@ namespace LibarySystem
 {
 
 
-    class Customer
+    class User
     {
         //SQL mapping
-        [Table(Name = "Customer")]
-        public class db_Customer
+        [Table(Name = "User")]
+        public class db_User
         {
             //Mapper auf Primary Key
             [Column(Name = "Pkey", IsDbGenerated = true, IsPrimaryKey = true)]
@@ -39,15 +39,15 @@ namespace LibarySystem
             [Column]
             public string Last_name;
             [Column]
-            public string Address;
+            public string Adress;
             [Column]
             public int ZIP;
             [Column]
             public string City;
-        }
-        public Customer(string t_Username, string t_Password, string t_Surname, string t_Last_name, string t_adress, int t_zip, string t_city)
-        {
-
+            [Column]
+            public bool Write;
+            [Column]
+            public bool Write_rent;
         }
     }
 
@@ -99,7 +99,7 @@ namespace LibarySystem
             [Column]
             public int FKey_Book;
             [Column]
-            public int FKey_Customer;
+            public int FKey_User;
         }
     }
 
@@ -110,12 +110,12 @@ namespace LibarySystem
         public int FKey_Book { get; }
         public int FKey_Customer { get; }
 
-        public objReservation(DateTime t_Reservation_date, bool t_Done, int t_FKey_Book, int t_FKey_Customer)
+        public objReservation(DateTime t_Reservation_date, bool t_Done, int t_FKey_Book, int t_FKey_User)
         {
             Reservation_date = t_Reservation_date;
             Done = t_Done;
             FKey_Book = t_FKey_Book;
-            FKey_Customer = t_FKey_Customer;
+            FKey_Customer = t_FKey_User;
         }
     }
 
@@ -137,7 +137,7 @@ namespace LibarySystem
         }
     }
 
-    class objCustomer
+    class objUser
     {
         public string Username { get; }
         public string Password { get; }
@@ -147,8 +147,10 @@ namespace LibarySystem
         public int Zip { get; }
         public string City { get; }
         public int PK { get; }
+        public bool Write { get; }
+        public bool Write_rent { get; }
 
-        public objCustomer(string t_Username, string t_Password, string t_Surname, string t_Last_name, string t_adress, int t_zip, string t_city, int t_PK)
+        public objUser(string t_Username, string t_Password, string t_Surname, string t_Last_name, string t_adress, int t_zip, string t_city, int t_PK, bool t_Write, bool t_Write_rent)
         {
             Username = t_Username;
             Password = t_Password;
@@ -158,6 +160,8 @@ namespace LibarySystem
             Zip = t_zip;
             Adress = t_city;
             PK = t_PK;
+            Write = t_Write;
+            Write_rent = t_Write_rent;
         }
     }
 

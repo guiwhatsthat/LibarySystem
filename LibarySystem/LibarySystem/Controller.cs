@@ -23,12 +23,12 @@ namespace LibarySystem
         }
 
         //Get user by username
-        public objCustomer Get_Customer(string t_username) {
+        public objUser Get_User(string t_username) {
             DataContext dbConnection = Create_DBConnection();
-            Table<Customer.db_Customer> userTable = dbConnection.GetTable<Customer.db_Customer>();
+            Table<User.db_User> userTable = dbConnection.GetTable<User.db_User>();
 
 
-            var returnList = new List<objCustomer>(); 
+            var returnList = new List<objUser>(); 
 
             //select
             var returnValue =
@@ -37,14 +37,14 @@ namespace LibarySystem
                            select i_u;
             //Convert DB search to objects
             foreach (var i in returnValue) {
-                var customer = new objCustomer(i.Username, i.Password, i.Surname, i.Last_name, i.Address, i.ZIP, i.City, i.Pkey_1);
+                var customer = new objUser(i.Username, i.Password, i.Surname, i.Last_name, i.Adress, i.ZIP, i.City, i.Pkey_1,i.Write,i.Write_rent);
                 returnList.Add(customer);
             }
 
             //Close DB connection
             dbConnection.Dispose();
-            objCustomer customerReturn = returnList.First();
-            return customerReturn;
+            objUser userReturn = returnList.First();
+            return userReturn;
         }
 
         //Get books by Name -> Change it later so you can search with whatever you want (more than one constructor or how can I do that?)
@@ -109,7 +109,7 @@ namespace LibarySystem
             //Convert DB search to objects
             foreach (var i in currentReservations)
             {
-                var reservvation = new objReservation(i.Reservation_date, i.Done, i.FKey_Book, i.FKey_Customer);
+                var reservvation = new objReservation(i.Reservation_date, i.Done, i.FKey_Book, i.FKey_User);
                 reservationList.Add(reservvation);
             }
 
@@ -131,7 +131,7 @@ namespace LibarySystem
                 var dbConnection = Create_DBConnection();
 
                 //Get_CurrentUser
-                objCustomer user = Get_Customer(t_CurrentUser);
+                objUser user = Get_User(t_CurrentUser);
 
                 //Get Book for reservation
                 objBook book = Get_Book(t_ISBN).First();
@@ -145,7 +145,7 @@ namespace LibarySystem
                     Reservation_date = DateTime.Now,
                     Done = false,
                     FKey_Book = book.PK,
-                    FKey_Customer = user.PK
+                    FKey_User = user.PK
                 };
 
                 // Add the new object to the Orders collection.
