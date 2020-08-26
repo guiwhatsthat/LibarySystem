@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibarySystem.GUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,8 +45,17 @@ namespace LibarySystem
             //Create user interface
             if (loginCorrect)
             {
-                UserInterface guiUser = new UserInterface(txtUsername.Text);
-                guiUser.Show();
+                Controller con = new Controller();
+                objUser currentUser = con.Get_User(txtUsername.Text);
+                if (currentUser.Write == true || currentUser.Write_rent == true) {
+                    AdminInterface guiAdmin = new AdminInterface(txtUsername.Text);
+                    guiAdmin.Show();
+                }
+                else
+                {
+                    UserInterface guiUser = new UserInterface(txtUsername.Text);
+                    guiUser.Show();
+                }
             } else
             {
 

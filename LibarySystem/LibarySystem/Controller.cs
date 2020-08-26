@@ -163,5 +163,93 @@ namespace LibarySystem
             return returnValue;
         }
 
+        public List<objVReservation> Get_AllReservations()
+        {
+            //Get DB connction
+            var dbConnection = Create_DBConnection();
+
+            Table<V_Reservations.V_Reservation> reservationView = dbConnection.GetTable<V_Reservations.V_Reservation>();
+
+            var reservationList = new List<objVReservation>();
+
+            //select
+            var currentReservations =
+                           from i_u in reservationView
+                           select i_u;
+            //Convert DB search to objects
+            foreach (var i in currentReservations)
+            {
+                var reservation = new objVReservation(i.Name,i.ISBN,i.Reservation_date,i.Username,i.Last_name,i.Surname);
+                reservationList.Add(reservation);
+            }
+
+            return reservationList;
+        }
+
+        public bool Set_DoneFlag(string t_ISBN, bool t_value)
+        {
+            //Get DB connction
+            var dbConnection = Create_DBConnection();
+            Table<Reservation.db_Reservation> reservationTable = dbConnection.GetTable<Reservation.db_Reservation>();
+            objBook book = Get_Book(t_ISBN).First();
+            var reservationList = new List<objReservation>();
+
+            //select
+            var currentReservations =
+                           from i_u in reservationTable
+                           where i_u.FKey_Book == book.PK
+                           select i_u;
+            foreach (var i in currentReservations)
+            {
+                i.Done = t_value;
+            }
+            dbConnection.SubmitChanges();
+            return true;
+        }
+
+        public bool Approve_Reservation(string t_ISBN, string t_Username)
+        {
+            objBook book = Get_Book(t_ISBN).First();
+            objUser user = Get_User(t_Username);
+            
+            try {
+                var dbConnection = Create_DBConnection();
+                DateTime today = DateTime.Now;
+                DateTime returnDate = today.AddDays(30);
+                Rent.db_Rent rent = new Rent.db_Rent
+                {
+                    Lend_date = today,
+                    End_rentdate = returnDate,
+                    FKey_Book = book.PK,
+                    FKey_User = user.PK
+
+                };
+
+                // Add the new object to the Orders collection.
+                Table<Rent.db_Rent> rentTable = dbConnection.GetTable<Rent.db_Rent>();
+                rentTable.InsertOnSubmit(rent);
+                dbConnection.SubmitChanges();
+
+                //Set done flag on Reservation
+                Set_DoneFlag(t_ISBN, true);   
+            } catch
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        public bool Cancel_Reservation(string t_ISBN)
+        {
+            try
+            {
+                Set_DoneFlag(t_ISBN, true);
+            } catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

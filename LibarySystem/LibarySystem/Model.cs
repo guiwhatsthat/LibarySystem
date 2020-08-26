@@ -103,6 +103,104 @@ namespace LibarySystem
         }
     }
 
+    class V_Reservations
+    {
+        //SQL mapping
+        [Table(Name = "V_Reservations")]
+        public class V_Reservation
+        {
+
+            //Mapper auf Feld Name der Gruppe
+            [Column]
+            public string Name;
+            [Column]
+            public string ISBN;
+            [Column]
+            public DateTime Reservation_date;
+            [Column]
+            public string Username;
+            [Column]
+            public string Last_name;
+            [Column]
+            public string Surname;
+        }
+    }
+
+    class Rent
+    {
+        //SQL mapping
+        [Table(Name = "Rent")]
+        public class db_Rent
+        {
+
+            //Mapper auf Primary Key
+            [Column(Name = "Pkey", IsDbGenerated = true, IsPrimaryKey = true)]
+            public int Pkey_1
+            {
+                get;
+                set;
+            }
+
+            //Mapper auf Feld Name der Gruppe
+            [Column]
+            public DateTime Lend_date;
+            [Column]
+            public Nullable<DateTime> Return_date;
+            [Column]
+            public DateTime End_rentdate;
+            [Column]
+            public int FKey_Book;
+            [Column]
+            public int FKey_User;
+        }
+    }
+
+    class objRent
+    {
+        public DateTime Lend_date { get; }
+        public Nullable<DateTime> Return_date { get; }
+        public DateTime End_rentdate { get; }
+        public int FKey_Book { get; }
+        public int FKey_User { get; }
+
+        public objRent(DateTime t_Lend_date, DateTime t_Return_date, DateTime t_End_rentdate, int t_FKey_Book, int t_FKey_User)
+        {
+            Lend_date = t_Lend_date;
+            Return_date = t_Return_date;
+            End_rentdate = t_End_rentdate;
+            FKey_Book = t_FKey_Book;
+            FKey_User = t_FKey_User;
+        }
+        public objRent(DateTime t_Lend_date, DateTime t_Return_date, int t_FKey_Book, int t_FKey_User)
+        {
+            Lend_date = t_Lend_date;
+            Return_date = null;
+            End_rentdate = t_Return_date;
+            FKey_Book = t_FKey_Book;
+            FKey_User = t_FKey_User;
+        }
+    }
+
+    class objVReservation
+    {
+        public string Name { get; }
+        public string ISBN { get; }
+        public DateTime Reservation_date { get; }
+        public string Username { get; }
+        public string Last_name { get; }
+        public string Surname { get; }
+
+        public objVReservation(string t_Name, string t_ISBN, DateTime t_Reservation_date, string t_Username, string t_Last_name, string t_Surname)
+        {
+            Name = t_Name;
+            ISBN = t_ISBN;
+            Reservation_date = t_Reservation_date;
+            Username = t_Username;
+            Last_name = t_Last_name;
+            Surname = t_Surname;
+        }
+    }
+
     class objReservation
     {
         public DateTime Reservation_date { get; }
