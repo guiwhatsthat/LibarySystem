@@ -59,11 +59,18 @@
     <Compile Include="GUI\AdminInterface.xaml.cs">
       <DependentUpon>AdminInterface.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FindUserInterface.xaml.cs">
+      <DependentUpon>FindUserInterface.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\UserInterface.xaml.cs">
       <DependentUpon>UserInterface.xaml</DependentUpon>
     </Compile>
     <Compile Include="View.cs" />
     <Page Include="GUI\AdminInterface.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\FindUserInterface.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

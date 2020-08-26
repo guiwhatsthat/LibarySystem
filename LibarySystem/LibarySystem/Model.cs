@@ -101,10 +101,7 @@ namespace LibarySystem
             [Column]
             public int FKey_User;
         }
-    }
 
-    class V_Reservations
-    {
         //SQL mapping
         [Table(Name = "V_Reservations")]
         public class V_Reservation
@@ -125,6 +122,7 @@ namespace LibarySystem
             public string Surname;
         }
     }
+
 
     class Rent
     {
@@ -153,6 +151,29 @@ namespace LibarySystem
             [Column]
             public int FKey_User;
         }
+
+        [Table(Name = "V_Rent")]
+        public class V_Rents
+        {
+
+            //Mapper auf Feld Name der Gruppe
+            [Column]
+            public string Name;
+            [Column]
+            public string ISBN;
+            [Column]
+            public DateTime Lend_date;
+            [Column]
+            public Nullable<DateTime> Return_date;
+            [Column]
+            public DateTime End_rentdate;
+            [Column]
+            public string Username;
+            [Column]
+            public string Last_name;
+            [Column]
+            public string Surname;
+        }
     }
 
     class objRent
@@ -178,6 +199,43 @@ namespace LibarySystem
             End_rentdate = t_Return_date;
             FKey_Book = t_FKey_Book;
             FKey_User = t_FKey_User;
+        }
+
+    }
+
+    class objVRent
+    {
+        public string Name { get; }
+        public string ISBN { get; }
+        public DateTime Lend_date { get; }
+        public Nullable<DateTime> Return_date { get; }
+        public DateTime End_rentdate { get; }
+        public string Username { get; }
+        public string Last_name { get; }
+        public string Surname { get; }
+
+        public objVRent(string t_Name, string t_ISBN, DateTime t_Lend_date, DateTime t_Return_date, DateTime t_End_rentdate, string t_Username, string t_Last_name, string t_Surname)
+        {
+            Name = t_Name;
+            ISBN = t_ISBN;
+            Lend_date = t_Lend_date;
+            Return_date = t_Return_date;
+            End_rentdate = t_End_rentdate;
+            Username = t_Username;
+            Last_name = t_Last_name;
+            Surname = t_Surname;
+        }
+
+        public objVRent(string t_Name, string t_ISBN, DateTime t_Lend_date, DateTime t_End_rentdate, string t_Username, string t_Last_name, string t_Surname)
+        {
+            Name = t_Name;
+            ISBN = t_ISBN;
+            Lend_date = t_Lend_date;
+            Return_date = null;
+            End_rentdate = t_End_rentdate;
+            Username = t_Username;
+            Last_name = t_Last_name;
+            Surname = t_Surname;
         }
     }
 

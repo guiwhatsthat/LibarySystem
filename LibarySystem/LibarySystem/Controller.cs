@@ -24,27 +24,37 @@ namespace LibarySystem
 
         //Get user by username
         public objUser Get_User(string t_username) {
-            DataContext dbConnection = Create_DBConnection();
-            Table<User.db_User> userTable = dbConnection.GetTable<User.db_User>();
+            try
+            {
+                DataContext dbConnection = Create_DBConnection();
+                Table<User.db_User> userTable = dbConnection.GetTable<User.db_User>();
 
 
-            var returnList = new List<objUser>(); 
+                var returnList = new List<objUser>(); 
 
-            //select
-            var returnValue =
-                           from i_u in userTable
-                           where i_u.Username == t_username
-                           select i_u;
-            //Convert DB search to objects
-            foreach (var i in returnValue) {
-                var customer = new objUser(i.Username, i.Password, i.Surname, i.Last_name, i.Adress, i.ZIP, i.City, i.Pkey_1,i.Write,i.Write_rent);
-                returnList.Add(customer);
+                //select
+                var returnValue =
+                               from i_u in userTable
+                               where i_u.Username == t_username
+                               select i_u;
+                //Convert DB search to objects
+                foreach (var i in returnValue) {
+                    var customer = new objUser(i.Username, i.Password, i.Surname, i.Last_name, i.Adress, i.ZIP, i.City, i.Pkey_1,i.Write,i.Write_rent);
+                    returnList.Add(customer);
+                }
+
+                //Close DB connection
+                dbConnection.Dispose();
+           
+                objUser userReturn = returnList.First();
+            
+                return userReturn;
+
             }
-
-            //Close DB connection
-            dbConnection.Dispose();
-            objUser userReturn = returnList.First();
-            return userReturn;
+            catch
+            {
+                return null;
+            }
         }
 
         //Get books by Name -> Change it later so you can search with whatever you want (more than one constructor or how can I do that?)
@@ -67,6 +77,11 @@ namespace LibarySystem
                 returnedBooks =
                            from i_u in bookTable
                            where i_u.ISBN == t_name
+                           select i_u;
+            } else if (t_name.ToLower() == "all")
+            {
+                returnedBooks =
+                           from i_u in bookTable
                            select i_u;
             }
             else {
@@ -168,7 +183,7 @@ namespace LibarySystem
             //Get DB connction
             var dbConnection = Create_DBConnection();
 
-            Table<V_Reservations.V_Reservation> reservationView = dbConnection.GetTable<V_Reservations.V_Reservation>();
+            Table<Reservation.V_Reservation> reservationView = dbConnection.GetTable<Reservation.V_Reservation>();
 
             var reservationList = new List<objVReservation>();
 
@@ -184,6 +199,30 @@ namespace LibarySystem
             }
 
             return reservationList;
+        }
+
+        public List<objVRent> Get_AllRents()
+        {
+            //Get DB connction
+            var dbConnection = Create_DBConnection();
+
+            Table<Rent.V_Rents> rentView = dbConnection.GetTable<Rent.V_Rents>();
+
+            var rentList = new List<objVRent>();
+
+            //select
+            var allRents =
+                           from i_u in rentView
+                           where i_u.Return_date == null
+                           select i_u;
+            //Convert DB search to objects
+            foreach (var i in allRents)
+            {
+                var rent = new objVRent(i.Name,i.ISBN,i.Lend_date,i.End_rentdate,i.Username,i.Surname,i.Last_name);
+                rentList.Add(rent);
+            }
+
+            return rentList;
         }
 
         public bool Set_DoneFlag(string t_ISBN, bool t_value)
@@ -245,6 +284,33 @@ namespace LibarySystem
             try
             {
                 Set_DoneFlag(t_ISBN, true);
+            } catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool End_Rent (string t_ISBN, DateTime t_Reservation_date, string t_username)
+        {
+            try
+            {
+                DataContext dbConnection = Create_DBConnection();
+                Table<Rent.db_Rent> rentTable = dbConnection.GetTable<Rent.db_Rent>();
+                objUser user = Get_User(t_username);
+                objBook book = Get_Book(t_ISBN).First();
+
+                //select
+                var returnValue =
+                               from i in rentTable
+                               where i.FKey_User == user.PK && i.FKey_Book == book.PK && i.Lend_date == t_Reservation_date
+                               select i;
+                //Convert DB search to objects
+                foreach (var i in returnValue)
+                {
+                    i.Return_date = DateTime.Now;
+                }
+                dbConnection.SubmitChanges();
             } catch
             {
                 return false;

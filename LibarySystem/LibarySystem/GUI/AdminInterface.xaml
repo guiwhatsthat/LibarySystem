@@ -8,7 +8,7 @@
         Title="AdminInterface" Height="450" Width="800">
     <Grid>
         <DockPanel>
-            <TabControl Name="tcSample">
+            <TabControl Name="AdminTabs" SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Header="Reservation approvel">
                     <StackPanel>
                         <ListView x:Name="lvReservations" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single" >
@@ -27,7 +27,43 @@
                         <Button x:Name="bntCancel" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BntCancel_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Current Rents" />
+                <TabItem Header="Current Rents" >
+                    <StackPanel>
+                        <ListView x:Name="lvRents" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="ISBN" DisplayMemberBinding="{Binding ISBN}"/>
+                                    <GridViewColumn Header="Reservation date" DisplayMemberBinding="{Binding Lend_date}"/>
+                                    <GridViewColumn Header="Reservation end date" DisplayMemberBinding="{Binding End_rentdate}"/>
+                                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
+                                    <GridViewColumn Header="Lastname" DisplayMemberBinding="{Binding Last_name}"/>
+                                    <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding Surname}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="btnEnd" Content="End" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BtnEnd_Click"/>
+                        <Button x:Name="btnReminder" Content="Reminder " HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BtnReminder_Click"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Trigger rental " >
+                    <StackPanel>
+                        <Label Content="Search for Books (You can search for the Title, ISBN or the author)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,26,0,0"/>
+                        <TextBox x:Name="txtBookSearch" HorizontalAlignment="Left" Height="23" Margin="10,0,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="357"/>
+                        <Button x:Name="btnSearchBook" Content="Search" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,5,0,0" Click="BtnSearchBook_Click"/>
+                        <ListView x:Name="lvbooks" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="ISBN" DisplayMemberBinding="{Binding ISBN}"/>
+                                    <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author}"/>
+                                    <GridViewColumn Header="Publisher" DisplayMemberBinding="{Binding Publisher}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="btnRental" Content="Trigger rental" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BtnRental_Click"/>
+                    </StackPanel>
+                </TabItem>
                 <TabItem Header="Add Book" />
                 <TabItem Header="Remove Book" />
             </TabControl>
