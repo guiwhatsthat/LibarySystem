@@ -317,5 +317,36 @@ namespace LibarySystem
             }
             return true;
         }
+
+        public bool Add_Book (objBook t_book)
+        {
+            bool returnValue = true;
+            try
+            {
+                //Get DB connction
+                var dbConnection = Create_DBConnection();
+
+                Book.db_Book newBook= new Book.db_Book
+                {
+                    Name = t_book.Name,
+                    ISBN = t_book.ISBN,
+                    Author = t_book.Author,
+                    Publisher = t_book.Publisher
+                };
+
+                //Sql insert
+                Table<Book.db_Book> reservationTable = dbConnection.GetTable<Book.db_Book>();
+                reservationTable.InsertOnSubmit(newBook);
+                dbConnection.SubmitChanges();
+
+
+            }
+            catch
+            {
+                returnValue = false;
+            }
+
+            return returnValue;
+        }
     }
 }

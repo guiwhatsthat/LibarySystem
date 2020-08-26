@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -218,6 +219,44 @@ namespace LibarySystem.GUI
             } else
             {
                 MessageBox.Show("Rental end failed. Please contact support", "failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnAddBook_Click(object sender, RoutedEventArgs e)
+        {
+            Controller con = new Controller();
+
+            //check empty fields
+            if (string.IsNullOrEmpty(txtName.Text) || string.IsNullOrEmpty(txtISBN.Text) || string.IsNullOrEmpty(txtAuthor.Text) || string.IsNullOrEmpty(txtPublisher.Text)) {
+                MessageBox.Show("Please fill in all informations", "Empty fields", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //Check ISBN format
+            string pattern = @"[0-9]*[-| ][0-9]*[-| ][0-9]*[-| ][0-9]*[-| ][0-9]*";
+            Regex rg = new Regex(pattern);
+            if (!rg.IsMatch(txtISBN.Text)) {
+                MessageBox.Show("ISBN is not corretly formatted", "Wrong format", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //Check if book already exists
+            if (con.Get_Book(txtISBN.Text).Count == 1)
+            {
+                MessageBox.Show("Book already exists", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //Create book
+            objBook newBook = new objBook(txtName.Text, txtISBN.Text, txtAuthor.Text, txtPublisher.Text,0);
+
+            //call book creation
+            if (con.Add_Book(newBook))
+            {
+                MessageBox.Show("Book was successfully created", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            } else
+            {
+                MessageBox.Show("Couldn't create book. Please contact support", "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
