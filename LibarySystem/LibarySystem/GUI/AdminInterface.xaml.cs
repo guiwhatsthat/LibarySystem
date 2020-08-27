@@ -57,17 +57,18 @@ namespace LibarySystem.GUI
                 lvRents.ItemsSource = null;
             }
 
-            //Update books
+            //Update books and remove book listview
             List<objBook> allBooks = con.Get_Book("all");
             if (0 != allBooks.Count)
             {
                 lvbooks.ItemsSource = allBooks;
+                lvRemoveBooks.ItemsSource = allBooks;
             }
             else
             {
                 lvbooks.ItemsSource = null;
+                lvRemoveBooks.ItemsSource = null;
             }
-
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -257,6 +258,35 @@ namespace LibarySystem.GUI
             } else
             {
                 MessageBox.Show("Couldn't create book. Please contact support", "error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnRemove_Click(object sender, RoutedEventArgs e)
+        {
+            Controller con = new Controller();
+
+            if (lvRemoveBooks.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a book", "Please select a book", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            objBook book = (objBook)lvRemoveBooks.Items[lvRemoveBooks.SelectedIndex];
+
+            //aske user if he/she is sure
+            var reservationChoice = MessageBox.Show("Do you want to delete " + book.Name + "?", "Are your sure?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (reservationChoice.ToString() == "No")
+            {
+                return;
+            }
+
+            if (con.Remove_Book(book))
+            {
+                MessageBox.Show("Book was successfully removed", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Couldn't remove book. Please contact support", "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

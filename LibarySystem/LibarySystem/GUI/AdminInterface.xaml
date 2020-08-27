@@ -77,7 +77,21 @@
                         <Button Content="Add Book" x:Name="BtnAddBook" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top" Width="75" Click="BtnAddBook_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Remove Book" />
+                <TabItem Header="Remove Book">
+                    <StackPanel>
+                        <ListView x:Name="lvRemoveBooks" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="ISBN" DisplayMemberBinding="{Binding ISBN}"/>
+                                    <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author}"/>
+                                    <GridViewColumn Header="Publisher" DisplayMemberBinding="{Binding Publisher}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="btnRemove" Content="Remove book" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,7,0,0" Click="BtnRemove_Click"/>
+                    </StackPanel>
+                </TabItem>
                 <TabItem Header="Report" />
             </TabControl>
 

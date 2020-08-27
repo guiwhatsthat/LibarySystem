@@ -348,5 +348,32 @@ namespace LibarySystem
 
             return returnValue;
         }
+
+        public bool Remove_Book(objBook t_book)
+        {
+            try
+            {
+                DataContext dbConnection = Create_DBConnection();
+                Table<Book.db_Book> bookTable = dbConnection.GetTable<Book.db_Book>();
+
+                //Convert DB search to objects
+                Book.db_Book removeBook = new Book.db_Book
+                {
+                    Pkey_1 = t_book.PK,
+                    Name = t_book.Name,
+                    ISBN = t_book.ISBN,
+                    Author = t_book.Author,
+                    Publisher = t_book.Publisher
+                };
+                bookTable.Attach(removeBook);
+                bookTable.DeleteOnSubmit(removeBook);
+                dbConnection.SubmitChanges();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
