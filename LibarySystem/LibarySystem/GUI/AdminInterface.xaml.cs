@@ -248,7 +248,7 @@ namespace LibarySystem.GUI
             }
 
             //Create book
-            objBook newBook = new objBook(txtName.Text, txtISBN.Text, txtAuthor.Text, txtPublisher.Text,0);
+            objBook newBook = new objBook(txtName.Text.Trim(), txtISBN.Text.Trim(), txtAuthor.Text.Trim(), txtPublisher.Text.Trim(), 0);
 
             //call book creation
             if (con.Add_Book(newBook))

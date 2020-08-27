@@ -74,7 +74,7 @@
                         <TextBox x:Name="txtAuthor" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="20,2,0,0"/>
                         <Label Content="Publisher" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,2,0,0"/>
                         <TextBox x:Name="txtPublisher" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="20,2,0,0"/>
-                        <Button Content="Add Book" x:Name="BtnAddBook" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top" Width="75" Click="BtnSearchUser_Click"/>
+                        <Button Content="Add Book" x:Name="BtnAddBook" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top" Width="75" Click="BtnAddBook_Click"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Remove Book" />
