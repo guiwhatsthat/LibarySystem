@@ -9,7 +9,7 @@
     <Grid>
         <DockPanel>
             <TabControl Name="AdminTabs" SelectionChanged="TabControl_SelectionChanged">
-                <TabItem Header="Reservation approvel">
+                <TabItem x:Name="tbApprovel" Header="Reservation approvel" IsEnabled="False">
                     <StackPanel>
                         <ListView x:Name="lvReservations" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single" >
                             <ListView.View>
@@ -27,7 +27,7 @@
                         <Button x:Name="bntCancel" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BntCancel_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Current Rents" >
+                <TabItem x:Name="tbCurrentRent" Header="Current Rents" IsEnabled="False">
                     <StackPanel>
                         <ListView x:Name="lvRents" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single" >
                             <ListView.View>
@@ -46,7 +46,7 @@
                         <Button x:Name="btnReminder" Content="Reminder " HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BtnReminder_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Trigger rental " >
+                <TabItem x:Name="tbTriggerRental" Header="Trigger rental" IsEnabled="False" >
                     <StackPanel>
                         <Label Content="Search for Books (You can search for the Title, ISBN or the author)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,26,0,0"/>
                         <TextBox x:Name="txtBookSearch" HorizontalAlignment="Left" Height="23" Margin="10,0,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="357"/>
@@ -64,7 +64,7 @@
                         <Button x:Name="btnRental" Content="Trigger rental" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BtnRental_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Add Book" >
+                <TabItem Header="Add Book" x:Name="tbAddBook" IsEnabled="False" >
                     <StackPanel>
                         <Label Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,17,0,0"/>
                         <TextBox x:Name="txtName" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="20,2,0,0"/>
@@ -77,7 +77,7 @@
                         <Button Content="Add Book" x:Name="BtnAddBook" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top" Width="75" Click="BtnAddBook_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Remove Book">
+                <TabItem Header="Remove Book" x:Name="tbRemoveBook" IsEnabled="False" >
                     <StackPanel>
                         <ListView x:Name="lvRemoveBooks" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single">
                             <ListView.View>
@@ -92,7 +92,7 @@
                         <Button x:Name="btnRemove" Content="Remove book" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,7,0,0" Click="BtnRemove_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Report" />
+                <TabItem Header="Report" x:Name="tbReport" />
             </TabControl>
 
         </DockPanel>

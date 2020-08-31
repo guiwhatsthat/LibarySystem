@@ -30,7 +30,7 @@ namespace LibarySystem
                 Table<User.db_User> userTable = dbConnection.GetTable<User.db_User>();
 
 
-                var returnList = new List<objUser>(); 
+                var returnList = new List<objUser>();
 
                 //select
                 var returnValue =
@@ -39,15 +39,15 @@ namespace LibarySystem
                                select i_u;
                 //Convert DB search to objects
                 foreach (var i in returnValue) {
-                    var customer = new objUser(i.Username, i.Password, i.Surname, i.Last_name, i.Adress, i.ZIP, i.City, i.Pkey_1,i.Write,i.Write_rent);
+                    var customer = new objUser(i.Username, i.Password, i.Surname, i.Last_name, i.Adress, i.ZIP, i.City, i.Pkey_1, i.Write, i.Write_rent);
                     returnList.Add(customer);
                 }
 
                 //Close DB connection
                 dbConnection.Dispose();
-           
+
                 objUser userReturn = returnList.First();
-            
+
                 return userReturn;
 
             }
@@ -106,7 +106,7 @@ namespace LibarySystem
         }
 
         //Check if a book is currently avaiable or not
-        public bool Get_ReservationState (string t_ISBN)
+        public bool Get_ReservationState(string t_ISBN)
         {
             bool returnValue = false;
             //Get DB connction
@@ -168,7 +168,7 @@ namespace LibarySystem
                 reservationTable.InsertOnSubmit(reservation);
                 dbConnection.SubmitChanges();
 
-              
+
             }
             catch
             {
@@ -194,7 +194,7 @@ namespace LibarySystem
             //Convert DB search to objects
             foreach (var i in currentReservations)
             {
-                var reservation = new objVReservation(i.Name,i.ISBN,i.Reservation_date,i.Username,i.Last_name,i.Surname);
+                var reservation = new objVReservation(i.Name, i.ISBN, i.Reservation_date, i.Username, i.Last_name, i.Surname);
                 reservationList.Add(reservation);
             }
 
@@ -218,7 +218,7 @@ namespace LibarySystem
             //Convert DB search to objects
             foreach (var i in allRents)
             {
-                var rent = new objVRent(i.Name,i.ISBN,i.Lend_date,i.End_rentdate,i.Username,i.Surname,i.Last_name);
+                var rent = new objVRent(i.Name, i.ISBN, i.Lend_date, i.End_rentdate, i.Username, i.Surname, i.Last_name);
                 rentList.Add(rent);
             }
 
@@ -250,7 +250,7 @@ namespace LibarySystem
         {
             objBook book = Get_Book(t_ISBN).First();
             objUser user = Get_User(t_Username);
-            
+
             try {
                 var dbConnection = Create_DBConnection();
                 DateTime today = DateTime.Now;
@@ -270,12 +270,12 @@ namespace LibarySystem
                 dbConnection.SubmitChanges();
 
                 //Set done flag on Reservation
-                Set_DoneFlag(t_ISBN, true);   
+                Set_DoneFlag(t_ISBN, true);
             } catch
             {
                 return false;
             }
-            
+
             return true;
         }
 
@@ -291,7 +291,7 @@ namespace LibarySystem
             return true;
         }
 
-        public bool End_Rent (string t_ISBN, DateTime t_Reservation_date, string t_username)
+        public bool End_Rent(string t_ISBN, DateTime t_Reservation_date, string t_username)
         {
             try
             {
@@ -318,7 +318,7 @@ namespace LibarySystem
             return true;
         }
 
-        public bool Add_Book (objBook t_book)
+        public bool Add_Book(objBook t_book)
         {
             bool returnValue = true;
             try
@@ -326,7 +326,7 @@ namespace LibarySystem
                 //Get DB connction
                 var dbConnection = Create_DBConnection();
 
-                Book.db_Book newBook= new Book.db_Book
+                Book.db_Book newBook = new Book.db_Book
                 {
                     Name = t_book.Name,
                     ISBN = t_book.ISBN,
@@ -374,6 +374,26 @@ namespace LibarySystem
                 return false;
             }
             return true;
+        }
+
+        public void Set_AdminPermission(objUser t_User, GUI.AdminInterface t_IntAdmin)
+        {
+
+            if (t_User.Write == true) {
+                t_IntAdmin.tbAddBook.IsEnabled = true;
+                t_IntAdmin.tbRemoveBook.IsEnabled = true;
+            }
+
+            if (t_User.Write_rent == true)
+            {
+                t_IntAdmin.tbApprovel.IsEnabled = true;
+                t_IntAdmin.tbCurrentRent.IsEnabled = true;
+                t_IntAdmin.tbTriggerRental.IsEnabled = true;
+            }
+
+            if (t_User.Write == false && t_User.Write_rent == false) {
+                t_IntAdmin.tbReport.Focus();
+            }
         }
     }
 }

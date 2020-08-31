@@ -26,9 +26,17 @@ namespace LibarySystem.GUI
         {
             User = t_User;
             InitializeComponent();
+            Set_Permissions();
 
             //Search all current rent rquest an fill tehm  into the Listview
             Refresh_List();
+        }
+
+        private void Set_Permissions()
+        {
+            var con = new Controller();
+            objUser user = con.Get_User(User);
+            con.Set_AdminPermission(user, this);
         }
 
         private void Refresh_List()
