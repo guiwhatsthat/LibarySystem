@@ -46,7 +46,6 @@ namespace LibarySystem
             lvFoundBooks.ItemsSource = bookList;
         }
 
-        //Ganze logik von hier muss in das view !!!!!!!!!!!!!!!!
         private void BtnRent_Click(object sender, RoutedEventArgs e)
         {
             if (lvFoundBooks.SelectedIndex == -1)

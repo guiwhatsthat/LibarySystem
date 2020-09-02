@@ -60,6 +60,17 @@
                                     <GridViewColumn Header="Publisher" DisplayMemberBinding="{Binding Publisher}"/>
                                 </GridView>
                             </ListView.View>
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Avaiable}"
+                                         Value="false">
+                                            <Setter Property="Background"
+                                            Value="Red" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
                         </ListView>
                         <Button x:Name="btnRental" Content="Trigger rental" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="75"  Margin="10,17,0,0" Click="BtnRental_Click"/>
                     </StackPanel>
