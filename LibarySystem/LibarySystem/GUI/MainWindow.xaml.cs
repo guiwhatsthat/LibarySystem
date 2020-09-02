@@ -37,15 +37,14 @@ namespace LibarySystem
         private void BntLogin_Click(object sender, RoutedEventArgs e)
         {
             //Create view object
-            View objView = new View();
+            Controller con= new Controller();
 
             //Call login function
-            bool loginCorrect = objView.Login(txtUsername.Text, txtPassword.Password);
+            bool loginCorrect = con.Login(txtUsername.Text, txtPassword.Password);
             
             //Create user interface
             if (loginCorrect)
             {
-                Controller con = new Controller();
                 objUser currentUser = con.Get_User(txtUsername.Text);
                 if (currentUser.Write == true || currentUser.Write_rent == true) {
                     AdminInterface guiAdmin = new AdminInterface(txtUsername.Text);

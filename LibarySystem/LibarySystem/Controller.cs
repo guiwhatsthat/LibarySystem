@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Text.RegularExpressions;
+using System.Data;
+using System.Data.Common;
+using System.IO;
 
 namespace LibarySystem
 {
@@ -95,7 +98,7 @@ namespace LibarySystem
             //Convert DB search to objects
             foreach (var i in returnedBooks)
             {
-                var book = new objBook(i.Name, i.ISBN, i.Author, i.Publisher, i.Pkey_1);
+                var book = new objBook(i.Name, i.ISBN, i.Author, i.Publisher, i.Pkey_1, i.Amount,i.Avaiable);
                 returnList.Add(book);
             }
 
@@ -108,32 +111,11 @@ namespace LibarySystem
         //Check if a book is currently avaiable or not
         public bool Get_ReservationState(string t_ISBN)
         {
-            bool returnValue = false;
             //Get DB connction
             var dbConnection = Create_DBConnection();
             objBook book = Get_Book(t_ISBN).First();
-            Table<Reservation.db_Reservation> reservationTable = dbConnection.GetTable<Reservation.db_Reservation>();
 
-            var reservationList = new List<objReservation>();
-
-            //select
-            var currentReservations =
-                           from i_u in reservationTable
-                           where i_u.FKey_Book == book.PK
-                           select i_u;
-            //Convert DB search to objects
-            foreach (var i in currentReservations)
-            {
-                var reservvation = new objReservation(i.Reservation_date, i.Done, i.FKey_Book, i.FKey_User);
-                reservationList.Add(reservvation);
-            }
-
-            if (reservationList.Count > 0)
-            {
-                returnValue = true;
-            }
-
-            return returnValue;
+            return book.Avaiable;
         }
 
         //Create a reservation
@@ -201,6 +183,30 @@ namespace LibarySystem
             return reservationList;
         }
 
+        public List<objVReservation> Get_Reservations(string t_Username)
+        {
+            //Get DB connction
+            var dbConnection = Create_DBConnection();
+
+            Table<Reservation.V_Reservation> reservationView = dbConnection.GetTable<Reservation.V_Reservation>();
+
+            var reservationList = new List<objVReservation>();
+
+            //select
+            var currentReservations =
+                           from i_u in reservationView
+                           where i_u.Username == t_Username
+                           select i_u;
+            //Convert DB search to objects
+            foreach (var i in currentReservations)
+            {
+                var reservation = new objVReservation(i.Name, i.ISBN, i.Reservation_date, i.Username, i.Last_name, i.Surname);
+                reservationList.Add(reservation);
+            }
+
+            return reservationList;
+        }
+
         public List<objVRent> Get_AllRents()
         {
             //Get DB connction
@@ -214,6 +220,30 @@ namespace LibarySystem
             var allRents =
                            from i_u in rentView
                            where i_u.Return_date == null
+                           select i_u;
+            //Convert DB search to objects
+            foreach (var i in allRents)
+            {
+                var rent = new objVRent(i.Name, i.ISBN, i.Lend_date, i.End_rentdate, i.Username, i.Surname, i.Last_name);
+                rentList.Add(rent);
+            }
+
+            return rentList;
+        }
+
+        public List<objVRent> Get_Rent(string t_Username)
+        {
+            //Get DB connction
+            var dbConnection = Create_DBConnection();
+
+            Table<Rent.V_Rents> rentView = dbConnection.GetTable<Rent.V_Rents>();
+
+            var rentList = new List<objVRent>();
+
+            //select
+            var allRents =
+                           from i_u in rentView
+                           where i_u.Return_date == null && i_u.Username == t_Username
                            select i_u;
             //Convert DB search to objects
             foreach (var i in allRents)
@@ -331,7 +361,9 @@ namespace LibarySystem
                     Name = t_book.Name,
                     ISBN = t_book.ISBN,
                     Author = t_book.Author,
-                    Publisher = t_book.Publisher
+                    Publisher = t_book.Publisher,
+                    Amount = t_book.Amount,
+                    Avaiable = true
                 };
 
                 //Sql insert
@@ -394,6 +426,119 @@ namespace LibarySystem
             if (t_User.Write == false && t_User.Write_rent == false) {
                 t_IntAdmin.tbReport.Focus();
             }
+        }
+
+        // Simplifyes the code in the view
+        public bool Login(string t_username, string t_password)
+        {
+            //Check if username and pass which where provides are correct
+            bool returnValue = false;
+
+            objUser objUser = Get_User(t_username);
+            if (objUser.Password == t_password)
+            {
+                returnValue = true;
+            }
+
+            return returnValue;
+        }
+
+        public List<objReport> Genertae_Report()
+        {
+            var dbConnection = Create_DBConnection();
+            dbConnection.Connection.Open();
+
+            var cmd = dbConnection.Connection.CreateCommand();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "dbo.SP_TOPBOOKS";
+            var param = cmd.CreateParameter();
+            param.DbType = DbType.Int16;
+            param.Direction = ParameterDirection.Input;
+            param.ParameterName = "@TOPBOOKSAMOUNT";
+            param.Value = 10;
+
+            cmd.Parameters.Add(param);
+
+            List<objReport> reportEntries = new List<objReport>();
+
+            using (DbDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string name = reader["Name"].ToString();
+                    int count;
+                    Int32.TryParse(reader["Amount_Rent"].ToString(), out count);
+                    objReport entry = new objReport(name, count);
+                    reportEntries.Add(entry);
+                }
+            }
+            return reportEntries;
+
+        }
+
+        public bool Export_Report(string t_path, List<objReport> t_Report)
+        {
+            // Create path first and remove file if exists
+            try
+            {
+                var folder = System.IO.Path.GetDirectoryName(t_path);
+                if (File.Exists(t_path))
+                {
+                    File.Delete(t_path);
+                }
+
+                if (!Directory.Exists(folder))
+                {
+                    System.IO.File.Create(folder);
+                }
+            }
+            catch (IOException e)
+            {
+                return false;
+            }
+
+            //Verweise auf die verwendete EXCEL-Struktur
+            Microsoft.Office.Interop.Excel.Application oXL;
+            Microsoft.Office.Interop.Excel._Workbook oWB;
+            Microsoft.Office.Interop.Excel._Worksheet oSheet;
+            Microsoft.Office.Interop.Excel.Range oRng;
+
+            object misvalue = System.Reflection.Missing.Value;
+            //Start Excel and get Application object.
+            oXL = new Microsoft.Office.Interop.Excel.Application();
+            oXL.Visible = true;
+
+            //Get a new workbook.
+            oWB = (Microsoft.Office.Interop.Excel._Workbook)(oXL.Workbooks.Add(""));
+            oSheet = (Microsoft.Office.Interop.Excel._Worksheet)oWB.ActiveSheet;
+
+            //Uberschriften setzen.
+            oSheet.Cells[1, 1] = "Name";
+            oSheet.Cells[1, 2] = "Amount rent";
+
+            // HIER DURCH DATAGRID LOOPEN UND ABFUELLEN
+            int counter = 1;
+            foreach (objReport item in t_Report)
+            {
+                counter++;
+                oSheet.Cells[counter, 1] = item.Name;
+                oSheet.Cells[counter, 2] = item.Amount_Rent;
+
+            }
+
+            //Format A1:D1 zentrieren und fett
+            oSheet.get_Range("A1", "B1").Font.Bold = true;
+
+            oXL.Visible = false;
+            oXL.UserControl = false;
+            oWB.SaveAs(t_path, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+                false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            oWB.Close();
+
+            return true;
+            
         }
     }
 }

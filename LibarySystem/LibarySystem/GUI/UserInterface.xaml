@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:LibarySystem"
         mc:Ignorable="d"
         Title="UserInterface" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="0,0,0,-44">
         <Label Content="Search for Books (You can search for the Title, ISBN or the author)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,26,0,0"/>
-        <Button x:Name="btnSearchBook" Content="Search" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="292,106,0,0" Click="BtnSearchBook_Click"/>
+        <Button x:Name="btnSearchBook" Content="Search" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,104,0,0" Click="BtnSearchBook_Click"/>
         <TextBox x:Name="txtBookSearch" HorizontalAlignment="Left" Height="23" Margin="10,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="357"/>
         <ListView x:Name="lvFoundBooks" HorizontalAlignment="Left" Height="197" Margin="10,174,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single">
             <ListView.View>
@@ -21,6 +21,29 @@
             </ListView.View>
         </ListView>
         <Button x:Name="btnRent" Content="Reserving" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="292,389,0,0" Click="BtnRent_Click"/>
+        <Button x:Name="btnShowAll" Content="Show all" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="113,104,0,0" Click="BtnShowAll_Click"/>
+        <Label Content="Your current rentals:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="401,26,0,0"/>
+        <ListView x:Name="lvRentals" HorizontalAlignment="Left" Height="115" Margin="401,57,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="ISBN" DisplayMemberBinding="{Binding ISBN}"/>
+                    <GridViewColumn Header="Start Date" DisplayMemberBinding="{Binding Lend_date}"/>
+                    <GridViewColumn Header="End date" DisplayMemberBinding="{Binding End_rentdate}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="Your current reservations:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="401,225,0,0"/>
+        <ListView x:Name="lvReservation" HorizontalAlignment="Left" Height="115" Margin="401,256,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="ISBN" DisplayMemberBinding="{Binding ISBN}"/>
+                    <GridViewColumn Header="Reservation Date" DisplayMemberBinding="{Binding Reservation_date}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="bntUpdateList" Content="Update Lists" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="683,389,0,0" Click="BntUpdateList_Click"/>
 
     </Grid>
 </Window>

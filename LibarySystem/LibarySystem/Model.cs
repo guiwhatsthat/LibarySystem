@@ -74,6 +74,10 @@ namespace LibarySystem
             public string Author;
             [Column]
             public string Publisher;
+            [Column]
+            public int Amount;
+            [Column]
+            public bool Avaiable;
         }
     }
 
@@ -152,7 +156,7 @@ namespace LibarySystem
             public int FKey_User;
         }
 
-        [Table(Name = "V_Rent")]
+        [Table(Name = "V_Rents")]
         public class V_Rents
         {
 
@@ -282,14 +286,18 @@ namespace LibarySystem
         public string Author { get; }
         public string Publisher { get; }
         public int PK { get; }
+        public int Amount { get; }
+        public bool Avaiable { get; }
 
-        public objBook(string t_Name, string t_ISBN, string t_Author, string t_Publisher, int t_PK)
+        public objBook(string t_Name, string t_ISBN, string t_Author, string t_Publisher, int t_PK, int t_Amount, bool t_Avaiable)
         {
             Name = t_Name;
             ISBN = t_ISBN;
             Author = t_Author;
             Publisher = t_Publisher;
             PK = t_PK;
+            Amount = t_Amount;
+            Avaiable = t_Avaiable;
         }
     }
 
@@ -318,6 +326,18 @@ namespace LibarySystem
             PK = t_PK;
             Write = t_Write;
             Write_rent = t_Write_rent;
+        }
+    }
+
+    class objReport
+    {
+        public string Name { get; }
+        public int Amount_Rent { get; }
+       
+        public objReport(string t_Name, int t_Amount_Rent)
+        {
+            Name = t_Name;
+            Amount_Rent = t_Amount_Rent;
         }
     }
 

@@ -24,6 +24,7 @@ namespace LibarySystem
         {
             User = t_User;
             InitializeComponent();
+            Update_Lists();
         }
 
         private void BtnSearchBook_Click(object sender, RoutedEventArgs e)
@@ -36,10 +37,10 @@ namespace LibarySystem
             }
             
             //Create view object
-            View objView = new View();
+            Controller con= new Controller();
 
             //Call the search book function
-            List<objBook> bookList = objView.Get_Book(searchString);
+            List<objBook> bookList = con.Get_Book(searchString);
 
             //Listview 
             lvFoundBooks.ItemsSource = bookList;
@@ -58,10 +59,10 @@ namespace LibarySystem
             //first I should check if the book is currently avaiable 
             //call function check reservation
             //Create view object
-            View objView = new View();
+            Controller con = new Controller();
             objBook selectBook = (objBook)lvFoundBooks.Items[lvFoundBooks.SelectedIndex];
 
-            if (objView.Get_ReservationState(selectBook.ISBN))
+            if (!con.Get_ReservationState(selectBook.ISBN))
             {
                 MessageBox.Show("Book is currently not avaiable", "Sorry", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -76,8 +77,32 @@ namespace LibarySystem
             }
 
             //Do reservation sql boooooooooooooy
-            objView.Set_Reseravtion(selectBook.ISBN, User);
+            con.Set_Reseravtion(selectBook.ISBN, User);
 
+        }
+
+        private void BtnShowAll_Click(object sender, RoutedEventArgs e)
+        {
+            Controller con = new Controller();
+            List<objBook> allBooks = con.Get_Book("All");
+            //Listview 
+            lvFoundBooks.ItemsSource = allBooks;
+        }
+
+        private void Update_Lists()
+        {
+            Controller con = new Controller();
+
+            //Get reservations and rentals for the user
+            List<objVReservation> objVReservations = con.Get_Reservations(User);
+            List<objVRent> objVRents = con.Get_Rent(User);
+            lvReservation.ItemsSource = objVReservations;
+            lvRentals.ItemsSource = objVRents;
+        }
+
+        private void BntUpdateList_Click(object sender, RoutedEventArgs e)
+        {
+            Update_Lists();
         }
     }
 }

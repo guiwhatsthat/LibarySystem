@@ -98,7 +98,7 @@ namespace LibarySystem.GUI
             }
             objVReservation selectedReservation = (objVReservation)lvReservations.Items[lvReservations.SelectedIndex];
 
-            if (con.Approve_Reservation(selectedReservation.ISBN, User))
+            if (con.Approve_Reservation(selectedReservation.ISBN, selectedReservation.Username))
             {
                 MessageBox.Show("Reservation successfull", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             } else
@@ -183,10 +183,10 @@ namespace LibarySystem.GUI
             }
 
             //Create view object
-            View objView = new View();
+            Controller con= new Controller();
 
             //Call the search book function
-            List<objBook> bookList = objView.Get_Book(searchString);
+            List<objBook> bookList = con.Get_Book(searchString);
 
             //Listview 
             lvbooks.ItemsSource = bookList;
@@ -203,6 +203,13 @@ namespace LibarySystem.GUI
                 return;
             }
             objBook book = (objBook)lvbooks.Items[lvbooks.SelectedIndex];
+
+            //Check if book is avaiable
+            if(!con.Get_ReservationState(book.ISBN))
+            {
+                MessageBox.Show("Book is not avaiable", "Book is not avaiable", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             
             //aske user if he/she is sure
             var reservationChoice = MessageBox.Show("Do you want to end the rental of " + book.Name + "?", "Are your sure?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -256,9 +263,16 @@ namespace LibarySystem.GUI
                 return;
             }
 
-            //Create book
-            objBook newBook = new objBook(txtName.Text.Trim(), txtISBN.Text.Trim(), txtAuthor.Text.Trim(), txtPublisher.Text.Trim(), 0);
+            int Amount;
+            if (!int.TryParse(txtAmount.Text,out Amount))
+            {
+                MessageBox.Show("Amount is not a number", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            //Create book
+            objBook newBook = new objBook(txtName.Text.Trim(), txtISBN.Text.Trim(), txtAuthor.Text.Trim(), txtPublisher.Text.Trim(), 0,Amount,true);
+            
             //call book creation
             if (con.Add_Book(newBook))
             {
@@ -296,6 +310,39 @@ namespace LibarySystem.GUI
             {
                 MessageBox.Show("Couldn't remove book. Please contact support", "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void BtnGenerateReport_Click(object sender, RoutedEventArgs e)
+        {
+            Controller con = new Controller();
+            List<objReport> Report = con.Genertae_Report();
+            lvReport.ItemsSource = Report;
+
+        }
+
+        private void BtnExportReport_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvReport.Items.Count == 0)
+            {
+                MessageBox.Show("Please generate first the report", "No genereated report found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            Controller con = new Controller();
+            List<objReport> Report = new List<objReport>();
+            foreach (objReport item in lvReport.Items)
+            {
+                Report.Add(item);
+            }
+            string path = "c:\\Temp\\report.xlsx";
+            if (con.Export_Report("c:\\Temp\\report.xlsx", Report))
+            {
+                MessageBox.Show("Report exported to " + path, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            } else
+            {
+                MessageBox.Show("File " + path + " is in use. Please close it first", "failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+
         }
     }
 }

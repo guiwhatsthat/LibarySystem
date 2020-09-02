@@ -10,8 +10,8 @@
         <Button x:Name="bntLogin" Content="Login" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" RenderTransformOrigin="5.947,11.65" Margin="50,255,0,0" Click="BntLogin_Click"/>
         <Label Content="Username:" HorizontalAlignment="Left" Margin="50,83,0,0" VerticalAlignment="Top"/>
         <Label Content="Password:" HorizontalAlignment="Left" Margin="50,126,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtUsername" Text="s.gasser" HorizontalAlignment="Left" Height="23" Margin="131,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160"/>
-        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="131,129,0,0" VerticalAlignment="Top" Height="23" Width="160" KeyDown="OnKeyDownHandler" Password="password"/>
+        <TextBox x:Name="txtUsername" Text="Steven" HorizontalAlignment="Left" Height="23" Margin="131,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="131,129,0,0" VerticalAlignment="Top" Height="23" Width="160" KeyDown="OnKeyDownHandler" Password="1234"/>
 
     </Grid>
 </Window>

@@ -74,6 +74,8 @@
                         <TextBox x:Name="txtAuthor" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="20,2,0,0"/>
                         <Label Content="Publisher" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,2,0,0"/>
                         <TextBox x:Name="txtPublisher" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="20,2,0,0"/>
+                        <Label Content="Amount" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,2,0,0"/>
+                        <TextBox x:Name="txtAmount" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="20,2,0,0"/>
                         <Button Content="Add Book" x:Name="BtnAddBook" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top" Width="75" Click="BtnAddBook_Click"/>
                     </StackPanel>
                 </TabItem>
@@ -92,7 +94,21 @@
                         <Button x:Name="btnRemove" Content="Remove book" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,7,0,0" Click="BtnRemove_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Report" x:Name="tbReport" />
+                <TabItem Header="Report" x:Name="tbReport">
+                    <StackPanel>
+                        <Label Content="Top 10 books" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,26,0,0"/>
+                        <ListView x:Name="lvReport" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="Rentals" DisplayMemberBinding="{Binding Amount_Rent}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="btnGenerateReport" Content="Generate Report" HorizontalAlignment="Left" VerticalAlignment="Top" Width="115" Margin="10,7,0,0" Click="BtnGenerateReport_Click"/>
+                        <Button x:Name="btnExportReport" Content="Export Report" HorizontalAlignment="Left" VerticalAlignment="Top" Width="115" Margin="10,7,0,0" Click="BtnExportReport_Click"/>
+                    </StackPanel>
+                </TabItem>
             </TabControl>
 
         </DockPanel>
