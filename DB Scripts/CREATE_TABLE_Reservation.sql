@@ -1,7 +1,7 @@
 USE [Librarysystem]
 GO
 
-/****** Object:  Table [dbo].[Reservation]    Script Date: 01.07.2020 15:35:15 ******/
+/****** Object:  Table [dbo].[Reservation]    Script Date: 26.08.2020 17:07:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -13,12 +13,15 @@ CREATE TABLE [dbo].[Reservation](
 	[Reservation_date] [datetime] NOT NULL,
 	[Done] [bit] NOT NULL,
 	[FKey_Book] [int] NOT NULL,
-	[FKey_Customer] [int] NOT NULL,
+	[FKey_User] [int] NOT NULL,
  CONSTRAINT [PK_Reservation] PRIMARY KEY CLUSTERED 
 (
 	[PKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Reservation] ADD  CONSTRAINT [DF_Reservation_Done]  DEFAULT ((0)) FOR [Done]
 GO
 
 ALTER TABLE [dbo].[Reservation]  WITH CHECK ADD  CONSTRAINT [FK_Reservation_Book] FOREIGN KEY([FKey_Book])
@@ -28,10 +31,10 @@ GO
 ALTER TABLE [dbo].[Reservation] CHECK CONSTRAINT [FK_Reservation_Book]
 GO
 
-ALTER TABLE [dbo].[Reservation]  WITH CHECK ADD  CONSTRAINT [FK_Reservation_Customer] FOREIGN KEY([FKey_Customer])
-REFERENCES [dbo].[Customer] ([PKey])
+ALTER TABLE [dbo].[Reservation]  WITH CHECK ADD  CONSTRAINT [FK_Reservation_User] FOREIGN KEY([FKey_User])
+REFERENCES [dbo].[User] ([PKey])
 GO
 
-ALTER TABLE [dbo].[Reservation] CHECK CONSTRAINT [FK_Reservation_Customer]
+ALTER TABLE [dbo].[Reservation] CHECK CONSTRAINT [FK_Reservation_User]
 GO
 

@@ -1,7 +1,7 @@
 USE [Librarysystem]
 GO
 
-/****** Object:  Table [dbo].[Rent]    Script Date: 29.06.2020 22:30:26 ******/
+/****** Object:  Table [dbo].[Rent]    Script Date: 26.08.2020 17:07:21 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,10 +12,9 @@ CREATE TABLE [dbo].[Rent](
 	[PKey] [int] IDENTITY(1,1) NOT NULL,
 	[Lend_date] [datetime] NOT NULL,
 	[Return_date] [datetime] NULL,
-	[End_rentdate] [datetime] NOT NULL,
+	[End_rentdate] [datetime] NULL,
 	[FKey_Book] [int] NOT NULL,
-	[FKey_Customer] [int] NOT NULL,
-	[FKey_Employee] [int] NOT NULL,
+	[FKey_User] [int] NOT NULL,
  CONSTRAINT [PK_Rent] PRIMARY KEY CLUSTERED 
 (
 	[PKey] ASC
@@ -30,17 +29,10 @@ GO
 ALTER TABLE [dbo].[Rent] CHECK CONSTRAINT [FK_Rent_Book]
 GO
 
-ALTER TABLE [dbo].[Rent]  WITH CHECK ADD  CONSTRAINT [FK_Rent_Customer] FOREIGN KEY([FKey_Customer])
-REFERENCES [dbo].[Customer] ([PKey])
+ALTER TABLE [dbo].[Rent]  WITH CHECK ADD  CONSTRAINT [FK_Rent_User] FOREIGN KEY([FKey_User])
+REFERENCES [dbo].[User] ([PKey])
 GO
 
-ALTER TABLE [dbo].[Rent] CHECK CONSTRAINT [FK_Rent_Customer]
-GO
-
-ALTER TABLE [dbo].[Rent]  WITH CHECK ADD  CONSTRAINT [FK_Rent_Employee] FOREIGN KEY([FKey_Employee])
-REFERENCES [dbo].[Employee] ([PKey])
-GO
-
-ALTER TABLE [dbo].[Rent] CHECK CONSTRAINT [FK_Rent_Employee]
+ALTER TABLE [dbo].[Rent] CHECK CONSTRAINT [FK_Rent_User]
 GO
 
