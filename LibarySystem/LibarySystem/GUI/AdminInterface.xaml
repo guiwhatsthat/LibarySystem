@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LibarySystem.GUI"
         mc:Ignorable="d"
-        Title="AdminInterface" Height="450" Width="800">
+        Title="AdminInterface" Height="415" Width="538">
     <Grid>
         <DockPanel>
             <TabControl Name="AdminTabs" SelectionChanged="TabControl_SelectionChanged">
@@ -105,7 +105,7 @@
                         <Button x:Name="btnRemove" Content="Remove book" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,7,0,0" Click="BtnRemove_Click"/>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Report" x:Name="tbReport">
+                <TabItem Header="Report" x:Name="tbReport" HorizontalAlignment="Right" Width="51">
                     <StackPanel>
                         <Label Content="Top 10 books" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,26,0,0"/>
                         <ListView x:Name="lvReport" HorizontalAlignment="Left" Height="197" Margin="10,17,0,0" VerticalAlignment="Top" Width="357" SelectionMode="Single">

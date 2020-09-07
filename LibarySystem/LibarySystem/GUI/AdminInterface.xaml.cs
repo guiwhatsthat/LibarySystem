@@ -170,7 +170,7 @@ namespace LibarySystem.GUI
 
         private void BtnReminder_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Söt e mahnig uslöse, aber muess mä ja nid mache i dem projekt ;)", "zu fuu", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("A reminder was sent to the user", "reminder sent", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void BtnSearchBook_Click(object sender, RoutedEventArgs e)
