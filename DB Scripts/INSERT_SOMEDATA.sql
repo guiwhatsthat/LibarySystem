@@ -16,7 +16,9 @@ VALUES ('Fabrice','1234','Fabrice','Reiser','Sulgenauweg 31',3007,'Bern',0,0),
 ('Maexu','1234','May','Mustermann','Musterweg 10',3007,'Bern',0,0),
 ('Bidu','1234','Beat','Testmann','Testweg 11',3013,'Bern',0,0),
 ('Henae','1234','Heinz','Wasauchimmer','Irgendeinweg 12',3013,'Bern',0,0),
-('Roefe','1234','Rolf','Irgendwas','Irgendwasstrasse 13',3013,'Bern',0,0);
+('Roefe','1234','Rolf','Irgendwas','Irgendwasstrasse 13',3013,'Bern',0,0),
+('FabriceHalbAdmin','1234','Fabrice','Reiser','Sulgenauweg 31',3007,'Bern',0,1),
+('StevenAdmin','1234','Steven','Gasser','Sulgenauweg 31',3007,'Bern',1,0);
 -- INSERT Rent
 
 INSERT INTO [Librarysystem].[dbo].[Rent] (Lend_date,Return_date,End_rentdate,FKey_Book,FKey_User)
